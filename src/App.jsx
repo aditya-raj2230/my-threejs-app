@@ -31,8 +31,8 @@ function App() {
 
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
-        const x = col * tileSize - (cols * tileSize) / 2 + tileSize / 2;
-        const z = row * tileSize - (rows * tileSize) / 2 + tileSize / 2;
+        const x = col * tileSize - (cols * tileSize) / 2 
+        const z = row * tileSize - (rows * tileSize) / 2
         positions.push([x, -1, z]);
       }
     }
