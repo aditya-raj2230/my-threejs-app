@@ -65,7 +65,6 @@ function App() {
     lastMousePosition.current = [event.clientX, event.clientY];
   };
 
-
   const handlePointerMove = (event) => {
     if (!dragging) return;
   
@@ -77,19 +76,20 @@ function App() {
       const newX = prevX + deltaX;
       const newZ = prevZ + deltaY;
   
-      // Separate boundaries for left-right (60%) and top-bottom (80%)
-      const boundaryX = (gridSize.cols * tileSize * 0.6) / 2; // Left-Right boundary (60%)
-      const boundaryZ = (gridSize.rows * tileSize * 0.8) / 2; // Top-Bottom boundary (80%)
+      // 50% boundary for both X and Z directions
+      const boundaryX = (gridSize.cols * tileSize * 0.5) / 2; // 50% of grid on X-axis
+      const boundaryZ = (gridSize.rows * tileSize * 0.5) / 2; // 50% of grid on Z-axis
   
       // Clamp offsets within boundaries
-      const clampedX = Math.max(-boundaryX, Math.min(boundaryX, newX)); // Left-Right
-      const clampedZ = Math.max(-boundaryZ, Math.min(boundaryZ, newZ)); // Top-Bottom
+      const clampedX = Math.max(-boundaryX, Math.min(boundaryX, newX));
+      const clampedZ = Math.max(-boundaryZ, Math.min(boundaryZ, newZ));
   
       return [clampedX, clampedZ];
     });
   
     lastMousePosition.current = [event.clientX, event.clientY];
   };
+  
   
   // Stop dragging
   const handlePointerUp = () => {
