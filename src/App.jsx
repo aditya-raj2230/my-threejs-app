@@ -70,7 +70,25 @@ function App() {
     const deltaX = event.clientX - lastX;
     const deltaY = event.clientY - lastY;
 
-    setOffset(([prevX, prevZ]) => [prevX + deltaX * 1, prevZ + deltaY * 1]);
+    // Calculate new offset
+    setOffset(([prevX, prevZ]) => {
+      const newX = prevX + deltaX * 1;
+      const newZ = prevZ + deltaY * 1;
+
+      // Get canvas dimensions
+      const canvasWidth = window.innerWidth;
+      const canvasHeight = window.innerHeight;
+
+      // Calculate boundaries
+      const maxOffsetX = (gridSize.cols * tileSize)/3 - canvasWidth / 2;
+      const maxOffsetZ = (gridSize.rows * tileSize)/3  - canvasHeight / 2;
+
+      // Clamp the offset within the boundaries
+      const clampedX = Math.max(-maxOffsetX, Math.min(maxOffsetX, newX));
+      const clampedZ = Math.max(-maxOffsetZ, Math.min(maxOffsetZ, newZ));
+
+      return [clampedX, clampedZ];
+    });
     lastMousePosition.current = [event.clientX, event.clientY];
   };
 
@@ -88,7 +106,7 @@ function App() {
       onMouseLeave={handlePointerUp} // Stop dragging if mouse leaves the canvas
     >
       <Canvas
-        style={{ height: "100%", width: "100%" }}
+        style={{ height: "100%", width: "100%", background: "transparent" }}
         orthographic
         camera={{
           position: [0, 800, 600],
@@ -97,7 +115,7 @@ function App() {
           far: 2000,
         }}
         onCreated={({ scene }) => {
-          scene.background = new THREE.Color("lightgray");
+          scene.background = null;
         }}
       >
         <ambientLight intensity={0.5} color={0xb0e0e6} />
