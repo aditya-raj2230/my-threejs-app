@@ -134,16 +134,24 @@ function App() {
         <group position={[offset[0], 0, offset[1]]}>
           {/* Tiled Ground */}
           {tilePositions.map((position, index) => (
-            <mesh
-              key={index}
-              position={position}
-              rotation={[-Math.PI / 2, 0, 0]}
-              onClick={() => handleTileClick(position)}
-            >
-              <planeGeometry args={[tileSize, tileSize]} />
-              <meshStandardMaterial map={tileTexture.current} />
-            </mesh>
-          ))}
+  <group key={index} position={position}>
+    {/* Tile */}
+    <mesh
+      rotation={[-Math.PI / 2, 0, 0]}
+      onClick={() => handleTileClick(position)}
+    >
+      <planeGeometry args={[tileSize, tileSize]} />
+      <meshStandardMaterial map={tileTexture.current} />
+    </mesh>
+    
+    {/* Border */}
+    <lineSegments>
+      <edgesGeometry args={[new THREE.PlaneGeometry(tileSize,2*tileSize)]} />
+      <lineBasicMaterial color="black" />
+    </lineSegments>
+  </group>
+))}
+
 
           {/* Trees with Animation */}
           {treePositions.map((position, index) => (
